@@ -29,4 +29,5 @@ def decrypt(ciphertext: str, key: str):
 if __name__ == "__main__":
     ciphertext = input("Please provide your ciphertext\n")
     key = input("Please provide the cipher key\n")
-    decrypt(ciphertext, key)
+    plain_text = decrypt(ciphertext, key)
+    print(plain_text)

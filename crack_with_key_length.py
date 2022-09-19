@@ -30,6 +30,7 @@ def crack_with_key_length(cipher_text: str, key_length: int):
         'Z': .00074,	
     }
     key = ""
+    best_chis = [0] * key_length
 
     # this goes thru each group of chars
     for i in range(0, key_length):
@@ -51,6 +52,10 @@ def crack_with_key_length(cipher_text: str, key_length: int):
             chi_vals[letter] = chi_square_val
 
         key = key + min(chi_vals, key=chi_vals.get).capitalize()
+        min_char = min(chi_vals, key=chi_vals.get)
+        best_chis[i] = chi_vals[min_char]
+
+    best_chis_avg = sum(best_chis) / len(best_chis)
 
     return key
         
@@ -69,13 +74,15 @@ def get_chi_square(actual_text: str, expected_freq: dict):
     return sum
 
 if __name__ == "__main__":
-    # ciphertext = input("Please provide your ciphertext\n")
-    # key_length = int(input("Please provide your key length\n"))
-    cipher_text = "NB TIM YPB JYXB LN NNUBA, CY EXA NMM TWLXB LN NNUBA, CY EXA NMM XOY TN TQMIWJ, QN BIP BBJ IDM IK NLWFNAEVYXA, FB QFA QPY JXLKB TN YMFNMC, QN BIP BBJ MMWWM WC QHHZBLOQQQG, CY EXA NMM PMUXWK WZ QQDPN, NB TIM YPB AYFALV IK LXZESMPA, CY EXA NMM PXLNVD WZ MWMM, CY EXA NMM TQHYMO WZ IMPXUNZ, TM BFL BDYWGQPCSO YMZTZB CM, BM EIX SWQPCSO YMZTZB CM, BM TMLJ IIT ATQKO XNZBKN YW EMUAMK, EY BMOM UQT DWCSO AQLJKQ BBJ WQPYW EXG — CS AEWLY, BEM JJZFWX BIP AI KIO TCPM QPY UZBAYSB MMLNWA, BBFB PWGJ WC QNX VLQMNMPB UZBEWLNBFMM NVPQMYMA WH NBP JYNVD ZYHMFDYI, NLZ ATWA WL KWO MPNT, FV NMM PCJJZIINNDB LYLZBM IK KLUJFZFAIS WKTS."
+    cipher_text = input("Please provide your ciphertext\n")
+    key_length = int(input("Please provide your key length\n"))
+    # cipher_text = "U CI MN UPRUSUDHQ MMP. JA, I MO JAT M ULAOW NEWE FJKEE IJK TAGPPQD QFCMR MNHMN BQA; ZOD CI U OZG KR YAWN TOXNUIOAF-IAVUG AOTARHMSYU. E MM M OWZ OR UQNSFCJOE, AH BXEEJ WZD NQJQ, FUDAD AZF HUQGKZE—AZF E YISJP QVQP XQ SMKZ FO BQOEEEU W YIZF. E MM UPRUSUDHQ, UZFADSFCJP, SUOLXY NGYMUEG LQOBNA DERWOQ TA UAQ MQ. NEWE FJA NOPKHQSE JAMDE AKG SQG OAMQVEYEE KJ OIDEQE SUFAEHAYO, UT UU WE TTQQSH U JWHE NGAZ SGTNAUZFAP BK OEDRATO AF TCNP, DUUPARFKJS GXCOE. WTGJ FHQA WBPDQWOH YG PTEK UAQ OZNU YY EWNDOGPZUNSU, PTEYUAXVQU, KD FUIIQNFU KR TTGED IYCCUNMVEAN—UPZQEP, GRQRKVDUNS CJP AZAPTIZI AJCQRP YE."
     formatted_cipher = format_cipher(cipher_text)
     
-    key = crack_with_key_length(formatted_cipher, 5)
+    key = crack_with_key_length(formatted_cipher, key_length)
+   # key_two = crack_with_key_length(formatted_cipher, 10)
 
     plain_text = decrypt(cipher_text, key)
+    # plain_text = decrypt(cipher_text, key_two)
 
     print(plain_text)
